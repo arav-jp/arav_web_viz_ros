@@ -1,0 +1,22 @@
+<launch>
+  <arg name="model" default="$(find zx135us_description)/urdf/zx135us.urdf.xacro"/>
+  <arg name="namespace" default=""/>
+  
+  <arg name="gui" default="true" />
+  <arg name="rviz_config" default="$(find can_test)/launch/config/display.rviz"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg model)' namespace:=$(arg namespace)"/>
+
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/> -->
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+  
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" if="$(arg gui)"/>
+
+  <node pkg="can_test" name="ros2mqtt" type="ros2mqtt.py" output="screen"/>
+
+  <node name="can_test_node" pkg="can_test" type="can_test_node" output="screen"/>
+
+  <node pkg="rosbag" type="play" name="bag_player" args="$(find can_test)/bag/2023-01-26-09-18-14.bag --clock" required="true"/>
+
+</launch>
