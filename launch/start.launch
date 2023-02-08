@@ -3,7 +3,7 @@
   <arg name="namespace" default=""/>
   
   <arg name="gui" default="true" />
-  <arg name="rviz_config" default="$(find can_test)/launch/config/display.rviz"/>
+  <arg name="rviz_config" default="$(find arav_web_viz_ros)/launch/config/display.rviz"/>
 
   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(arg model)' namespace:=$(arg namespace)"/>
 
@@ -13,9 +13,9 @@
   
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config)" if="$(arg gui)"/>
 
-  <node pkg="can_test" name="ros2mqtt" type="ros2mqtt.py" output="screen"/>
+  <node pkg="arav_web_viz_ros" name="ros2mqtt" type="ros2mqtt.py" output="screen"/>
 
-  <node name="can_test_node" pkg="can_test" type="can_test_node" output="screen"/>
+  <node name="arav_web_viz_ros_node" pkg="arav_web_viz_ros" type="arav_web_viz_ros_node" output="screen"/>
 
   <node pkg="socketcan_bridge" type="socketcan_to_topic_node" name="socketcan_to_topic_node"/>
 
